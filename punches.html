@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Knockout Playground</title>
+        <!-- base css, doesn't change from page to page -->
+        <link href="shared/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="shared/base.css" rel="stylesheet">
+        <!-- javascriptsies -->
+        <script src="shared/jquery-2.1.1.min.js"></script>
+        <script src="shared/underscore/underscore.min.js"></script>
+        <script src="shared/underscore/underscore.string.min.js"></script>
+        <script src="shared/bootstrap/js/bootstrap.min.js"></script>
+        <script src="shared/knockout-3.2.0.js"></script>
+        <script src="shared/knockout.mapping-latest.js"></script>
+        <script src="shared/knockout.punches.min.js"></script>
+        <script src="shared/base.navigation-data.js"></script>
+        <script src="scripts/site.js"></script>
+        <!-- now load the page-specific javascript, if needed -->
+        <script src="scripts/knockout-bindings.js"></script>
+        <script src="scripts/knockout-punches.js"></script>
+        <script src="page-content/index.js"></script>
+        <script>
+            ko.punches.enableAll();
+            // keep this function here, to bind, but put the view model & other functions in page-content/index.js
+            $(function() {
+                window.vm = createViewModel();
+                ko.applyBindings(window.vm, document.getElementById("main-content"));
+            });
+            $(function() {
+                $("#code-1").text("<td>{{ jobTitle | uppercase }}</td>");
+                $("#code-2").text('<input type="hidden" name="items[{{$index}}].firstName" value="{{firstName}}"/>');
+            })
+        </script>
+    </script>
+</head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="top-nav">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html">{{title}}</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right"  data-bind="foreach: links">
+                        <li><a href="{{url}}">{{text}}</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid" id="main-content">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" >
+
+                    <div class="well">
+                        This page uses the <code>Knockout.Punches</code> library in addition to normal <code>knockout</code>.  This enables
+                        us to write statements like this:  
+                        <br/><br/>
+                        <ul>
+                            <li><code id="code-1"></code></li>
+                            <li><code id="code-2"></code></li>
+                        </ul>
+                    </div>
+
+                    <h1>Employees</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Company</th>
+                                <th>Job Title</th>
+                                <th>Salary</th>
+                                <th>Tax</th>
+                                <th>Years</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: employees">
+                            <tr>
+                                <td>{{ fullName }}</td>
+                                <td>{{ company }}</td>
+                                <td>{{ jobTitle | uppercase }}</td>
+                                <td>{{ salary }}</td>
+                                <td>{{ tax | money }}</td>
+                                <td>{{ yearsExperience }}</td>
+                                <td style="font-family: Consolas, Menlo, fixed-width; font-size: 9pt">
+                                    $index=<span>{{ $index }}</span>
+                                    <input type="hidden" name="items[{{$index}}].firstName" value="{{firstName}}"/>
+                                    <input type="hidden" name="items[{{$index}}].jobTitle"  value="{{jobTitle}}"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre>{{ $root | json:4 }}</pre>
+            </div>
+        </div>
+    </body>
+</html>

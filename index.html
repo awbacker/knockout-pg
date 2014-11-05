@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Knockout Playground</title>
+        <!-- base css, doesn't change from page to page -->
+        <link href="shared/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="shared/base.css" rel="stylesheet">
+        <!-- javascriptsies -->
+        <script src="shared/jquery-2.1.1.min.js"></script>
+        <script src="shared/underscore/underscore.min.js"></script>
+        <script src="shared/underscore/underscore.string.min.js"></script>
+        <script src="shared/bootstrap/js/bootstrap.min.js"></script>
+        <script src="shared/knockout-3.2.0.js"></script>
+        <script src="shared/knockout.mapping-latest.js"></script>
+        <script src="shared/base.navigation-data.js"></script>
+        <script src="scripts/site.js"></script>
+        <!-- now load the page-specific javascript, if needed -->
+        <script src="scripts/knockout-bindings.js"></script>
+        <script src="page-content/index.js"></script>
+        <script>
+        // keep this function here, to bind, but put the view model & other functions in page-content/index.js
+        $(function() {
+            window.vm = createViewModel();
+            ko.applyBindings(window.vm, document.getElementById("main-content"));
+        });
+        </script>
+    </script>
+</head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" id="top-nav">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="index.html" data-bind="text:title"></a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right"  data-bind="foreach: links">
+                        <li><a data-bind="text: text, attr: { href: url }"></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div class="container-fluid" id="main-content">
+            <div class="row">
+                <div class="col-sm-12 col-md-12" >
+                    <h1>Employees</h1>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Full Name</th>
+                                <th>Company</th>
+                                <th>Job Title</th>
+                                <th>Salary</th>
+                                <th>Tax</th>
+                                <th>Years</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind="foreach: employees">
+                            <tr>
+                                <td data-bind="text: fullName"></td>
+                                <td data-bind="text: company"></td>
+                                <td data-bind="text: jobTitle"></td>
+                                <td data-bind="text: salary"></td>
+                                <td data-bind="textMoney: tax"></td>
+                                <td data-bind="text: yearsExperience"></td>
+                                <td style="font-family: Consolas, Menlo, fixed-width; font-size: 9pt">
+                                    $index=<span data-bind="text: $index"></span>
+                                    <input type="hidden" data-bind="mvcListItem: firstName"/>
+                                    <input type="hidden" data-bind="mvcListItem: jobTitle"/>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <pre data-bind="toJSON: $root"></pre>
+            </div>
+        </div>
+    </body>
+</html>
